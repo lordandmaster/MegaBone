@@ -1,11 +1,13 @@
-var View = Backbone.View.extend(function() {
+var View = Backbone.View.extend({
 
 	template: null,
 	
 	_rendered: false,
 	_keep_display_updated: true,
 	
-	initialize: function() {
+	initialize: function (options) {
+		var self = this.constructor;
+		this.template = options.template || self.default_template;
 		this.model.on('change', this._onChange.bind(this));
 	},
 	
@@ -14,17 +16,17 @@ var View = Backbone.View.extend(function() {
 	},
 	
 	render: function() {
-		this._rendered = true;
-		
-		var $el_new = $($.trim(this.template(this.getTemplateData())));
+		var template_html = this.template(this.getTemplateData());
+		var $el_new = $($.trim(template_html));
 		var $el_old = this.$el;
 		
-		this.setElement($el);
+		this.setElement($el_new);
 		
-		if ( $el_old.parent().length ) {
+		if ( $el_old && $el_old.parent().length ) {
 			$el_old.replaceWith( $el_new );
 		}
 		
+		this._rendered = true;
 		return this;
 	},
 	
@@ -39,6 +41,12 @@ var View = Backbone.View.extend(function() {
 		if ( this._rendered && this.keepDisplayUpdated() ) {
 			this.render();
 		}
+	}
+
+}, {
+
+	default_template: function(data) {
+		return '<div>' + JSON.stringify(data) + '</div>';
 	}
 
 });
