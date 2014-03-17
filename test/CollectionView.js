@@ -54,6 +54,20 @@ define([
 			equal($el.find('span').length, 4, 'each item is rendered');
 			equal($el.find('span').eq(2).text(), 'Wash the wheel', 'items are rendered in the same order');
 		});
+		
+		test('When I change the collection after rendered', function() {
+			this.sut.render();
+			this.sut.setCollection(this.tasklist2);
+			var $el = this.sut.$el;
+			
+			equal($el.find('span').length, 5, 'each new item is rendered');
+			equal($el.text().indexOf('Wash the') < 0, true, 'old items are removed');
+			equal($el.find('span').eq(2).text(), 'Walk around', 'new items are in the same order');
+			
+			this.tasklist.reset([]);
+			$el = this.sut.$el;
+			equal($el.find('span').length, 5, 'events are unbound from old collection');
+		});
 	
 	}; // end return
 }); // end define
