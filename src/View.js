@@ -7,17 +7,20 @@ var View = Backbone.View.extend({
 	
 	initialize: function (options) {
 		var self = this.constructor;
-		this.template = options.template || self.default_template;
-		this.model.on('change', this._onChange.bind(this));
+		this.template = options.template || this.template
+			|| self.default_template;
+		
+		if ( this.model ) {
+			this.model.on('change', this._onChange, this);
+		}
 	},
 	
 	getTemplateData: function() {
-		return this.model.attributes;
+		return (this.model) ? this.model.attributes : {};
 	},
 	
 	render: function() {
-		var template_html = this.template(this.getTemplateData());
-		var $el_new = $($.trim(template_html));
+		var $el_new = this._renderNewEl();
 		var $el_old = this.$el;
 		
 		this.setElement($el_new);
@@ -37,6 +40,11 @@ var View = Backbone.View.extend({
 		return this._keep_display_updated;
 	},
 	
+	_renderNewEl: function() {
+		var template_html = this.template(this.getTemplateData());
+		return $($.trim(template_html));
+	},
+	
 	_onChange: function (model) {
 		if ( this._rendered && this.keepDisplayUpdated() ) {
 			this.render();
@@ -49,4 +57,4 @@ var View = Backbone.View.extend({
 		return '<div>' + JSON.stringify(data) + '</div>';
 	}
 
-});
+}); // end View
