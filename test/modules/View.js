@@ -1,7 +1,4 @@
-define([
-	'src/View'
-], function (
-) {
+define([], function () {
 	return function() {
 	
 		var template = function (data) {

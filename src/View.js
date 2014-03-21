@@ -11,7 +11,7 @@ var View = Backbone.View.extend({
 			|| self.default_template;
 		
 		if ( this.model ) {
-			this.model.on('change', this._onChange, this);
+			this.listenTo(this.model, 'change', this._onChange);
 		}
 	},
 	
