@@ -18,6 +18,7 @@ var export_var = 'MegaBone';
 
 var fs = require('fs');
 var path = require('path');
+var UglifyJS = require('uglify-js');
 
 var src_dir = path.resolve(__dirname, '../src');
 
@@ -71,12 +72,20 @@ function getConcatenatedSrc (callback)
 	getSrcContents(0);
 }
 
-function renderTarget (tpl_file, data, ext)
+function renderTarget (tpl_file, data, ext, callback)
 {
 	renderTemplate(tpl_file, data, function (output) {
 		var filename = path.resolve(__dirname, '../' + export_var + ext);
-		fs.writeFile(filename, output);
+		fs.writeFileSync(filename, output);
+		callback(filename);
 	});
+}
+
+function writeMinVersion (filename)
+{
+	var target = filename.replace(/\.js$/, '.min.js');
+	var result = UglifyJS.minify(filename);
+	fs.writeFile(target, result.code);
 }
 
 //------------------------------------------------------------------------
@@ -84,6 +93,6 @@ function renderTarget (tpl_file, data, ext)
 
 getConcatenatedSrc(function (body) {
 	var data = { body: body, export_var: export_var };
-	renderTarget('output.tpl', data, '.js');
-	renderTarget('output.amd.tpl', data, '.amd.js');
+	renderTarget('output.tpl', data, '.js', writeMinVersion);
+	renderTarget('output.amd.tpl', data, '.amd.js', writeMinVersion);
 });
