@@ -113,6 +113,15 @@ define([], function () {
 			equal($el.find('span').eq(1).text(), 'Prance around', 'items are in the given order');
 		});
 		
+		test('When I destroy a model', function() {
+			this.sut.render();
+			var model = this.tasklist.models[1];
+			model.destroy();
+			
+			var $el = this.sut.$el;
+			equal($el.text().indexOf(' bar') < 0, true, 'it is not in the display');
+		});
+		
 		test('When I sort by an attribute name', function() {
 			this.sut.setSort('description').render();
 			this.assertOrder(['bar', 'car', 'steel', 'wheel'], 'items are alphabetical');
