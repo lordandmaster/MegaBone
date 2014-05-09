@@ -5,7 +5,7 @@
 	var MegaBone = _.extend(Backbone, {
 		View: View,
 		CollectionView: CollectionView,
-		Router: Router
+		Util: Util
 	});
 
 	window.<<export_var>> = Megabone;

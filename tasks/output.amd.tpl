@@ -13,7 +13,7 @@ define([
 	var MegaBone = _.extend(Backbone, {
 		View: View,
 		CollectionView: CollectionView,
-		Router: Router
+		Util: Util
 	});
 	
 	return MegaBone;
