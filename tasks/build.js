@@ -14,7 +14,7 @@ var src_files = [
 	'CollectionView.js'
 ];
 
-var export_var = 'MegaBone';
+var export_var = 'Megabone';
 
 var fs = require('fs');
 var path = require('path');

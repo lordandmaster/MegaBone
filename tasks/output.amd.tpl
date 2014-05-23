@@ -10,12 +10,12 @@ define([
 
 	<<body>>
 
-	var MegaBone = _.extend(Backbone, {
+	var Megabone = _.extend(Backbone, {
 		View: View,
 		CollectionView: CollectionView,
 		Util: Util
 	});
 	
-	return MegaBone;
+	return Megabone;
 	
 });
